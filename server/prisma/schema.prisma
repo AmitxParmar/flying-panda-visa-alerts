@@ -18,3 +18,27 @@ model User {
 
     @@map("users")
 }
+
+enum VisaType {
+    Tourist
+    Business
+    Student
+}
+
+enum AlertStatus {
+    Active
+    Booked
+    Expired
+}
+
+// Visa Alert Model
+model VisaAlert {
+    id        String      @id @default(uuid()) @map("_id")
+    country   String
+    city      String
+    visaType  VisaType
+    status    AlertStatus @default(Active)
+    createdAt DateTime    @default(now())
+
+    @@map("visa_alerts")
+}
