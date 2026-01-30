@@ -115,14 +115,31 @@ export interface AxiosAuthError {
     message?: string;
 }
 
-/**
- * Type guard to check if an error is an AxiosAuthError
- */
-export function isAxiosAuthError(error: unknown): error is AxiosAuthError {
-    return (
-        typeof error === "object" &&
-        error !== null &&
-        "response" in error &&
-        typeof (error as AxiosAuthError).response === "object"
-    );
+
+
+// ============================================
+// Visa Alert Types
+// ============================================
+
+export type VisaType = 'Tourist' | 'Business' | 'Student';
+
+export type AlertStatus = 'Active' | 'Booked' | 'Expired';
+
+export interface VisaAlert {
+    id: string;
+    country: string;
+    city: string;
+    visaType: VisaType;
+    status: AlertStatus;
+    createdAt: string;
+}
+
+export interface CreateAlertPayload {
+    country: string;
+    city: string;
+    visaType: VisaType;
+}
+
+export interface UpdateAlertPayload {
+    status?: AlertStatus;
 }

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import AlertController from './alert.controller';
 import RequestValidator from '@/middlewares/request-validator';
-import { CreateAlertDto, UpdateAlertDto } from './alert.dto';
+import { CreateAlertDto, UpdateAlertDto } from '@/dto/alert.dto';
 
 const router: Router = Router();
 const controller = new AlertController();

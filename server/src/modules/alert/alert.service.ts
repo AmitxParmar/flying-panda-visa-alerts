@@ -1,6 +1,6 @@
 import { VisaAlert } from '@prisma/client';
 import AlertRepository from './alert.repository';
-import { CreateAlertDto, UpdateAlertDto } from './alert.dto';
+import { CreateAlertDto, UpdateAlertDto } from '../../dto/alert.dto';
 import { HttpNotFoundError } from '@/lib/errors';
 
 export default class AlertService {
@@ -14,8 +14,8 @@ export default class AlertService {
         return this.alertRepository.create(data);
     }
 
-    async getAlerts(): Promise<VisaAlert[]> {
-        return this.alertRepository.findAll();
+    async getAlerts(params: { cursor?: string; limit: number }): Promise<{ items: VisaAlert[]; nextCursor: string | null }> {
+        return this.alertRepository.findAll(params);
     }
 
     async updateAlert(id: string, data: UpdateAlertDto): Promise<VisaAlert> {
