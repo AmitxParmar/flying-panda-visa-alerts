@@ -10,10 +10,10 @@ export class RegisterDto {
   @IsNotEmpty({ message: 'Email is required' })
   email: string;
 
-  @IsOptional()
   @IsString()
+  @IsNotEmpty({ message: 'Name is required' })
   @MinLength(2, { message: 'Name must be at least 2 characters long' })
-  name?: string;
+  name: string;
 
   @IsString()
   @MinLength(6, { message: 'Password must be at least 6 characters long' })
@@ -26,7 +26,7 @@ export class LoginDto {
   @IsNotEmpty({ message: 'Email is required' })
   email: string;
 
-  @IsOptional()
   @IsString()
-  password?: string;
+  @IsNotEmpty({ message: 'Password is required' })
+  password: string;
 }
