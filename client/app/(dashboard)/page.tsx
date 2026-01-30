@@ -26,6 +26,16 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { AlertForm } from "@/components/forms/alert-form";
 import { AlertDialog } from "@/components/common/alert-dialog";
+import {
+  AlertDialog as ShadcnAlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { VisaAlert, CreateAlertPayload, UpdateAlertPayload } from "@/types";
 import { format } from "date-fns";
 
@@ -87,6 +97,7 @@ export default function DashboardPage() {
 
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingAlert, setEditingAlert] = useState<VisaAlert | null>(null);
+  const [deletingAlertId, setDeletingAlertId] = useState<string | null>(null);
 
   const handleCreate = async (data: any) => {
     // Cast to proper type since form returns generic data
@@ -101,9 +112,10 @@ export default function DashboardPage() {
     setEditingAlert(null);
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this alert?")) {
-      await deleteMutation.mutateAsync(id);
+  const confirmDelete = async () => {
+    if (deletingAlertId) {
+      await deleteMutation.mutateAsync(deletingAlertId);
+      setDeletingAlertId(null);
     }
   };
 
@@ -167,7 +179,7 @@ export default function DashboardPage() {
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         className="text-destructive focus:text-destructive"
-                        onClick={() => handleDelete(alert.id)}
+                        onClick={() => setDeletingAlertId(alert.id)}
                       >
                         Delete
                       </DropdownMenuItem>
@@ -226,6 +238,27 @@ export default function DashboardPage() {
           />
         )}
       </AlertDialog>
+
+      {/* Delete Confirmation Dialog */}
+      <ShadcnAlertDialog open={!!deletingAlertId} onOpenChange={(open) => !open && setDeletingAlertId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your alert.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </ShadcnAlertDialog>
     </div>
   );
 }
