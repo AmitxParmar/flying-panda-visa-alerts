@@ -14,13 +14,20 @@ export interface GetAlertsResponse {
 }
 
 export async function getAlerts({ pageParam }: { pageParam?: string }): Promise<ApiSuccessResponse<GetAlertsResponse>> {
-    const response = await api.get<ApiSuccessResponse<GetAlertsResponse>>(API_BASE, {
-        params: {
-            cursor: pageParam,
-            limit: 10,
-        }
-    });
-    return response.data;
+    console.log('[AlertService] Fetching alerts...', pageParam);
+    try {
+        const response = await api.get<ApiSuccessResponse<GetAlertsResponse>>(API_BASE, {
+            params: {
+                cursor: pageParam,
+                limit: 10,
+            }
+        });
+        console.log('[AlertService] Success:', response.data);
+        return response.data;
+    } catch (e) {
+        console.error('[AlertService] Error:', e);
+        throw e;
+    }
 }
 
 export async function createAlert(

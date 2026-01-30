@@ -17,8 +17,11 @@ export function useGetAlerts() {
     return useInfiniteQuery({
         queryKey: ALERT_KEYS.all,
         queryFn: ({ pageParam }) => getAlerts({ pageParam: pageParam as string | undefined }),
-        initialPageParam: undefined as string | undefined, // Explicit type for TS
-        getNextPageParam: (lastPage: ApiSuccessResponse<GetAlertsResponse>) => lastPage.data.nextCursor ?? undefined,
+        initialPageParam: undefined as string | undefined,
+        getNextPageParam: (lastPage: ApiSuccessResponse<GetAlertsResponse>) => {
+            console.log('[useGetAlerts] getNextPageParam lastPage:', lastPage);
+            return lastPage.data.nextCursor ?? undefined;
+        },
     });
 }
 

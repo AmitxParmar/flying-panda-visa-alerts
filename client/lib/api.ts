@@ -55,8 +55,12 @@ const refreshAuthToken = async (): Promise<ApiSuccessResponse<AuthUserResponse>>
 
 // Response interceptor for automatic token refresh
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('[Axios] Response Success:', response.config.url, response.status);
+    return response;
+  },
   async (error: AxiosError<ApiErrorResponse>) => {
+    console.log('[Axios] Response Error:', error.config?.url, error.response?.status);
     const response = error.response;
     const config = error.config as ExtendedAxiosRequestConfig | undefined;
     const requestUrl: string | undefined = config?.url;
