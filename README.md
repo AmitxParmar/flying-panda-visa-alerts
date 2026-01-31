@@ -130,12 +130,12 @@ Transparency on how AI tools (Gemini/Antigravity) were utilized in this assignme
 
 | Area | Helper vs Human | Details |
 | :--- | :--- | :--- |
-| **Boilerplate & Setup** | **AI** | Generated initial Express structure and Next.js layout to save time on configuration. |
+| **Project Structure** | **Human Guided** | I defined the monorepo structure and modular backend architecture (separation of concerns: controller, service, repo) to ensure scalability. Directed AI to implement this specific pattern. |
+| **Clean Code & Patterns** | **Human Guided** | Enforced specific coding standards: use of DTOs for validation, centralized error handling, and separation of UI components from logic (custom hooks). AI generated the boilerplate based on these strict constraints. |
+| **Authentication Logic** | **Collaborative** | AI scaffolded the initial JWT flow; I gained deep understanding of the `auth/me` recursive fetch issue and guided the specific fix (wrapping response object) which AI initially missed. |
 | **Database Schema** | **Human** | Designed the `VisaAlert` schema and relationships based on requirements. |
-| **Authentication Logic** | **AI + Human** | AI scaffolded the JWT flow; Human (Me) debugged the specific "infinite refresh loop" issue and redirect persistence bugs. |
-| **UI Components** | **AI** | Generated Shadcn/UI components (Cards, Forms, Sidebar) to ensure professional aesthetics quickly. |
+| **UI Components** | **AI** | Generated Shadcn/UI components (Cards, Forms, Sidebar) to ensure professional aesthetics quickly, while I customized the layout and responsiveness. |
 | **Business Logic** | **Human** | Implemented the specific CRUD rules, filters, and state management logic. |
-| **Debugging** | **Collaborative** | AI suggested potential causes for bugs (like the `auth/me` return shape), I validated and implemented the fixes. |
 
 ---
-**Submission by:** Saksham Goel
+**Submission by:** Amit Parmar
