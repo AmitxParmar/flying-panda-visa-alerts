@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { login, register, logout, getCurrentUser } from "@/services/auth.service";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { type LoginSchema } from "@/schemas/login.schema";
 import { type RegisterSchema } from "@/schemas/register.schema";
@@ -18,11 +18,15 @@ export function useLogout() {
 }
 
 export function useGetCurrentUser() {
+    const pathname = usePathname();
+    const isAuthPage = ["/login", "/register"].includes(pathname);
+
     return useQuery({
         queryKey: ["auth", "currentUser"],
         queryFn: getCurrentUser,
         retry: false, // Don't retry on 401
         staleTime: 5 * 60 * 1000, // Consider fresh for 5 minutes
+        enabled: !isAuthPage, // Don't fetch user on auth pages
     });
 }
 
