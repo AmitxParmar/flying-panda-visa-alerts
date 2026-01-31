@@ -1,25 +1,45 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { login, register } from "@/services/auth.service";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import { login, register, logout, getCurrentUser } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { type LoginSchema } from "@/schemas/login.schema";
 import { type RegisterSchema } from "@/schemas/register.schema";
+
+export function useLogout() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: logout,
+        onSuccess: () => {
+            // Clear all cached data on logout
+            queryClient.clear();
+        },
+    });
+}
+
+export function useGetCurrentUser() {
+    return useQuery({
+        queryKey: ["auth", "currentUser"],
+        queryFn: getCurrentUser,
+        retry: false, // Don't retry on 401
+        staleTime: 5 * 60 * 1000, // Consider fresh for 5 minutes
+    });
+}
 
 export const useLogin = () => {
     const router = useRouter();
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (data: LoginSchema) => {
-            return await login(data.email, data.password);
-        },
+        mutationFn: (data: LoginSchema) => login(data.email, data.password),
         onSuccess: (data) => {
-            toast.success("Login successful");
-            queryClient.setQueryData(["authUser"], data.data.user);
+            // Set user data immediately to avoid redirect loop
+            queryClient.setQueryData(["auth", "currentUser"], data);
+            toast.success("Login successful!");
             router.push("/");
         },
         onError: (error: any) => {
-            toast.error(error.response?.data?.message || "Failed to login");
+            toast.error(error?.response?.data?.message || "Login failed");
         },
     });
 };
@@ -29,16 +49,15 @@ export const useRegister = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (data: RegisterSchema) => {
-            return await register(data.email, data.name, data.password);
-        },
+        mutationFn: (data: RegisterSchema) => register(data.email, data.name, data.password),
         onSuccess: (data) => {
-            toast.success("Account created successfully");
-            queryClient.setQueryData(["authUser"], data.data.user);
+            // Set user data immediately to avoid redirect loop
+            queryClient.setQueryData(["auth", "currentUser"], data);
+            toast.success("Registration successful!");
             router.push("/");
         },
         onError: (error: any) => {
-            toast.error(error.response?.data?.message || "Failed to register");
+            toast.error(error?.response?.data?.message || "Registration failed");
         },
     });
 };

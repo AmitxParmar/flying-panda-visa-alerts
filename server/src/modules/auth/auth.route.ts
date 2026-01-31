@@ -80,6 +80,15 @@ auth.post('/refresh-token', controller.refreshToken);
 auth.get('/profile', verifyAuthToken, controller.getProfile);
 
 /**
+ * GET /auth/me
+ * @summary Get current authenticated user (alias for /profile)
+ * @tags auth
+ * @security bearerAuth
+ * @return {User} 200 - current user
+ */
+auth.get('/me', verifyAuthToken, controller.getProfile);
+
+/**
  * POST /auth/change-password
  * @summary Change user password
  * @tags auth

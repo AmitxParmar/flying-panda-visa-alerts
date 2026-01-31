@@ -43,8 +43,15 @@ export async function login(
 /**
  * Logout user
  */
-export async function logout(): Promise<ApiSuccessResponse<null>> {
-  const response = await api.post<ApiSuccessResponse<null>>(`${API_BASE}/logout`);
+export async function logout(): Promise<void> {
+  await api.post("/auth/logout");
+}
+
+/**
+ * Get current authenticated user
+ */
+export async function getCurrentUser(): Promise<ApiSuccessResponse<AuthUserResponse>> {
+  const response = await api.get<ApiSuccessResponse<AuthUserResponse>>(`${API_BASE}/me`);
   return response.data;
 }
 

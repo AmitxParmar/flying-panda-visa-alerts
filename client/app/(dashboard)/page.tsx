@@ -75,12 +75,11 @@ export default function DashboardPage() {
     hasNextPage,
     isFetchingNextPage,
     status,
-    isPending,
     error,
     refetch
   } = useGetAlerts();
 
-  console.log('Dashboard State:', { status, isPending, hasData: !!data, error });
+  console.log('Dashboard State:', { status, hasData: !!data, error });
 
   const createMutation = useCreateAlert();
   const updateMutation = useUpdateAlert();
@@ -140,11 +139,7 @@ export default function DashboardPage() {
         </Button>
       </div>
 
-      {isPending ? (
-        <div className="flex justify-center py-8">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-        </div>
-      ) : status === "error" ? (
+      {status === "error" ? (
         <div className="flex flex-col items-center justify-center py-8 text-center">
           <AlertCircle className="h-10 w-10 text-destructive mb-2" />
           <p className="text-lg font-medium">Error loading alerts</p>

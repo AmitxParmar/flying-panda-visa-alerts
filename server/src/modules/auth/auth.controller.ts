@@ -151,7 +151,7 @@ export default class AuthController extends Api {
 
       this.send(
         res,
-        user,
+        { user },
         HttpStatusCode.Ok,
         'Profile retrieved successfully'
       );

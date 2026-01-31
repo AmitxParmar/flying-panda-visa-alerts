@@ -64,9 +64,8 @@ api.interceptors.response.use(
     const response = error.response;
     const config = error.config as ExtendedAxiosRequestConfig | undefined;
     const requestUrl: string | undefined = config?.url;
-    const isAuthRefreshEndpoint = requestUrl?.includes(
-      "/auth/refresh-token"
-    );
+    const isAuthRefreshEndpoint = requestUrl?.includes("/auth/refresh-token");
+    const isAuthMeEndpoint = requestUrl?.includes("/auth/me");
     const errorCode = getErrorCode(error);
 
     // Check if this is an authentication error that should trigger token refresh
@@ -88,6 +87,12 @@ api.interceptors.response.use(
         }
         return Promise.reject(error);
       }
+
+      // Don't trigger refresh for /auth/me - just fail silently
+      // This prevents loops on initial page load when user is not authenticated
+      // if (isAuthMeEndpoint) {
+      //   return Promise.reject(error);
+      // }
 
       if (config?._retry) {
         // Already retried once, do not loop

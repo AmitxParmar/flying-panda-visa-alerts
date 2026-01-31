@@ -35,7 +35,7 @@ export const verifyAuthToken = async (
 
     // Attach user to request
     req.user = user;
-    console.log(`[AuthMiddleware] Authenticated User: ${user.waId} (${user.id})`);
+    console.log(`[AuthMiddleware] Authenticated User: ${user.email} (${user.id})`);
     next();
   } catch (error) {
     next(error);

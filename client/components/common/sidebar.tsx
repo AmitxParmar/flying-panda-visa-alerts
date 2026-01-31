@@ -29,7 +29,7 @@ export function Sidebar({ className }: { className?: string }) {
     const pathname = usePathname();
 
     return (
-        <div className={cn("pb-12 h-screen border-r bg-background flex flex-col justify-between", className)}>
+        <div className={cn("pb-12 h-full bg-background flex flex-col justify-between", className)}>
             <div className="space-y-4 py-4">
                 <div className="px-3 py-2">
                     <div className="flex items-center gap-2 mb-2 px-4 h-14">
