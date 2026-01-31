@@ -1,139 +1,60 @@
-# Quick Chat - Backend API
+# Visa Alerts - Server
 
+The backend API for the Visa Alerts tool, built with Express.js and Prisma.
 
-## 🚀 Features
+## 🏗 Architecture & Design
 
+### Modular Structure
+The codebase follows a scalable module-based pattern. Each feature (e.g., `auth`, `alert`) is self-contained:
 
----
-
-## 📋 Table of Contents
-
-
-
----
-
-## 🛠 Tech Stack
-
-
----
-
-## ✅ Prerequisites
-
-- Node.js >= 18.0.0
-- pnpm (recommended) or npm
-- MongoDB instance (local or cloud)
-
----
-
-## 📦 Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd quick-chat/server
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pnpm install
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
-   ```
-
-4. **Generate Prisma client**
-   ```bash
-   pnpm run prisma:generate
-   ```
-
----
-
-## 🔐 Environment Variables
-
-Create a `.env` file in the `server` directory:
-
-```env
-# Server Configuration
-NODE_ENV=development
-PORT=8000
-APP_BASE_URL=http://localhost
-
-# Database
-DATABASE_URL="mongodb://localhost:27017/quick-chat?authSource=admin"
-
-# Frontend URL (for CORS)
-CLIENT_URL=http://localhost:3000
-
-# JWT Secrets (Generate strong random strings)
-JWT_ACCESS_SECRET=your-access-secret
-JWT_REFRESH_SECRET=your-refresh-secret
-JWT_ACCESS_EXPIRY=15m
-JWT_REFRESH_EXPIRY=7d
+```text
+src/
+├── modules/
+│   ├── alert/
+│   │   ├── alert.controller.ts  # Request handling
+│   │   ├── alert.service.ts     # Business logic
+│   │   ├── alert.repository.ts  # Database queries
+│   │   └── alert.route.ts       # Route definitions
+│   └── auth/
+└── middlewares/                 # Shared middlewares
 ```
 
----
+### Key Components
 
-## 🏃 Running the Application
+1.  **Prisma ORM:**
+    - Type-safe database access.
+    - Schema defined in `prisma/schema.prisma`.
+    - Integrated with MongoDB (mapped IDs) for flexibility.
 
-### Development Mode
+2.  **Authentication & Security:**
+    - **JWT:** Stateless authentication with Access (15m) and Refresh (7d) tokens.
+    - **HttpOnly Cookies:** Tokens are stored in secure cookies, not LocalStorage, mitigating XSS risks.
+    - **Rate Limiting:** `express-rate-limit` protects against brute-force attacks.
+
+3.  **Validation:**
+    - **Zod:** Runtime request validation via middleware. ensuring bad data never reaches the controller.
+
+4.  **Error Handling:**
+    - Centralized `errorHandler` middleware catches sync and async errors.
+    - Standardized error response format (`code`, `message`, `success: false`).
+
+## 🛠 Setup
+
 ```bash
+# Install dependencies
+pnpm install
+
+# Generate Prisma Client
+pnpm run prisma:generate
+
+# Seed Database (200 Dummy Alerts)
+pnpm run seed
+
+# Run Server
 pnpm run dev
 ```
-Server starts at `http://localhost:8000`
 
-### Production Build
-```bash
-pnpm run build
-pnpm start
-```
+## 📚 API Documentation
 
----
-
-## 🐳 Docker Deployment
-
-The application includes a production-ready `Dockerfile`.
-
-### Build & Run locally
-```bash
-# Build image
-docker build -t quick-chat-server .
-
-# Run container
-docker run -p 8000:8000 --env-file .env quick-chat-server
-```
-
-### Deploy on Render (Docker Runtime)
-1. Create a **New Web Service**.
-2. Connect your repo.
-3. Select **Docker** as the Runtime.
-4. Set **Root Directory** to `server`.
-5. Add your Environment Variables.
-6. Deploy!
-
----
-
-## 🏗 Architecture
-
-### Project Structure (Module-based)
-
-```
-
-```
-
----
-
-## � API Endpoints
-
-### Authentication
-
-
-### Messages
-
-### Conversations
-
-
-For full documentation, run the server and visit:
-`http://localhost:8000/v1/swagger`
+(Optional: If Swagger is enabled)
+Visit `http://localhost:8000/v1/swagger` for interactive API docs.
