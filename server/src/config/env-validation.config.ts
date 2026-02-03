@@ -10,7 +10,7 @@ const envValidationConfig = {
   PORT: num({ default: appConfig.defaultPort }),
   APP_BASE_URL: str(),
   DATABASE_URL: str(),
-  CLIENT_URL: str({ default: 'http://localhost:3000' }),
+  CLIENT_URL: str({ default: 'http://localhost:5000' }),
   JWT_ACCESS_SECRET: str({ default: 'your-access-secret-key-change-in-production' }),
   JWT_REFRESH_SECRET: str({ default: 'your-refresh-secret-key-change-in-production' }),
   JWT_ACCESS_EXPIRY: str({ default: '1h' }),
