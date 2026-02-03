@@ -37,6 +37,12 @@ export default function LoginPage() {
         loginUser({ email: "demo@example.com", password: "password123" });
     }
 
+    function onTestLogin() {
+        form.setValue("email", "john@doe.com");
+        form.setValue("password", "john@doe");
+        loginUser({ email: "john@doe.com", password: "john@doe" });
+    }
+
     return (
         <div className="flex min-h-screen w-full flex-col items-center justify-center">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] px-4">
@@ -112,15 +118,26 @@ export default function LoginPage() {
                         </div>
                     </div>
 
-                    <Button
-                        variant="outline"
-                        type="button"
-                        disabled={isPending}
-                        onClick={onDemoLogin}
-                        className="w-full"
-                    >
-                        Demo Account
-                    </Button>
+                    <div className="grid grid-cols-2 gap-4">
+                        <Button
+                            variant="outline"
+                            type="button"
+                            disabled={isPending}
+                            onClick={onDemoLogin}
+                            className="w-full"
+                        >
+                            Demo Account
+                        </Button>
+                        <Button
+                            variant="outline"
+                            type="button"
+                            disabled={isPending}
+                            onClick={onTestLogin}
+                            className="w-full"
+                        >
+                            Test Account
+                        </Button>
+                    </div>
                 </div>
 
                 <p className="px-8 text-center text-sm text-muted-foreground">
