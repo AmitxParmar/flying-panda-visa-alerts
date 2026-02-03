@@ -31,12 +31,6 @@ export default function LoginPage() {
         loginUser(values);
     }
 
-    function onDemoLogin() {
-        form.setValue("email", "demo@example.com");
-        form.setValue("password", "password123");
-        loginUser({ email: "demo@example.com", password: "password123" });
-    }
-
     function onTestLogin() {
         form.setValue("email", "john@doe.com");
         form.setValue("password", "john@doe");
@@ -119,15 +113,6 @@ export default function LoginPage() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                        <Button
-                            variant="outline"
-                            type="button"
-                            disabled={isPending}
-                            onClick={onDemoLogin}
-                            className="w-full"
-                        >
-                            Demo Account
-                        </Button>
                         <Button
                             variant="outline"
                             type="button"
